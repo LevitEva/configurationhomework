@@ -1,0 +1,5 @@
+ls /filesystem_image/test_fs/dir1
+cd filesystem_image/test_fs/dir1
+rmdir for-rm
+uname
+exit
