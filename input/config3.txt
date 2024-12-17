@@ -1,0 +1,9 @@
+|# Комментарий
+о приложении #|
+struct {
+    app_name MyApp,
+    settings struct {
+        theme dark,
+        version 1
+    }
+}

@@ -1,0 +1,7 @@
+; Конфигурация пользователей
+global default_password 1234
+
+struct {
+    user1 JohnDoe,
+    password [default_password]
+}

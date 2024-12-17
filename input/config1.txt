@@ -1,0 +1,9 @@
+; Это пример конфигурации сети
+global ip 19216801
+global subnet_mask 2552552550
+
+struct {
+    hostname router,
+    address [ip],
+    mask [subnet_mask]
+}
