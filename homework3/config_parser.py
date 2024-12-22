@@ -17,17 +17,19 @@ def remove_comments(data):
     data = re.sub(MULTILINE_COMMENT, "", data, flags=re.DOTALL)
     return data
 
-def parse_struct(text):
+def parse_struct(text, globals=None):
     """Парсит структуру и возвращает словарь"""
     matches = re.findall(STRUCT_PATTERN, text)
     if not matches:
-        return None
+        raise ValueError("Invalid struct definition")
 
     result = {}
     for match in matches:
         items = match.split(",")
         for item in items:
             key, value = item.strip().split()
+            if globals:
+                value = resolve_constants(value, globals)
             result[key] = parse_value(value)
     return result
 
@@ -61,7 +63,7 @@ def resolve_constants(data, globals):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python config_parser.py <input_txt_file> <output_yaml_file>")
+        print("Usage: python3 config_parser.py <input_txt_file> <output_yaml_file>")
         sys.exit(1)
 
     input_file = sys.argv[1]
@@ -80,7 +82,7 @@ def main():
         data = resolve_constants(data, globals)
 
         # Парсинг структуры
-        struct = parse_struct(data)
+        struct = parse_struct(data, globals)
 
         # Ghi dữ liệu YAML ra file
         with open(output_file, "w") as f:
@@ -89,7 +91,7 @@ def main():
         print(f"Output written to {output_file}")
 
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}", file=sys.stderr)  # In lỗi ra stderr
         sys.exit(1)
 
 if __name__ == "__main__":
